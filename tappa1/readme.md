@@ -38,7 +38,7 @@ source .venv/bin/activate
 Con l'ambiente virtuale attivo, installiamo Flask usando pip:
 
 ```bash
-pip install Flask
+pip install -r requirements.txt
 ```
 
 Per verificare l'installazione:
@@ -79,6 +79,7 @@ if __name__ == '__main__':
 ### Eseguire l'applicazione
 
 ```bash
+cd tappa1
 python app.py
 ```
 

@@ -7,46 +7,90 @@ Flask è un micro-framework web per Python che permette di creare applicazioni w
 
 ---
 
-## Creazione dell'ambiente virtuale (.venv)
+## Installazione di uv (senza privilegi amministratore)
 
-L'ambiente virtuale permette di isolare le dipendenze del progetto.
+uv può essere installato senza diritti di amministratore.
 
 ### Windows
-```bash
-# Creare l'ambiente virtuale
-python -m venv .venv
 
-# Attivare l'ambiente virtuale
-.venv\Scripts\activate
+
+Con Git-bash:
+```bash
+# Scarica e installa uv nella directory utente
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Eventualmente con powershell
+```bash
+# Installazione tramite PowerShell 
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 ### Linux/Mac
 ```bash
-# Creare l'ambiente virtuale
-python3 -m venv .venv
-
-# Attivare l'ambiente virtuale
-source .venv/bin/activate
+# Installazione tramite shell script
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-**Nota:** Quando l'ambiente virtuale è attivo, vedrai `(.venv)` all'inizio della riga di comando.
+**Dopo l'installazione:**
+- Chiudi e riapri il terminale
+- Verifica l'installazione con: `uv --version`
 
+**Nota:** L'installazione avviene nella directory utente (`~/.local/bin` su Linux/Mac o `%USERPROFILE%\.cargo\bin` su Windows), quindi non servono privilegi amministratore.
+
+Per maggiori dettagli: [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)
+
+---
+
+## Creazione del progetto con uv
+
+uv gestisce automaticamente l'ambiente virtuale e le dipendenze del progetto.
+
+### Inizializzare il progetto
+```bash
+# Creare un nuovo progetto Flask con uv
+uv init 
+
+# Questo crea:
+# - pyproject.toml (configurazione del progetto)
+# - .python-version (versione di Python)
+# - hello.py (file di esempio, che possiamo rinominare/sostituire)
+```
+
+**Nota:** `uv init` crea automaticamente la struttura base del progetto con il nome specificato e la versione Python 3.12.
+
+Si possono specificare il nome della directory e persino la versione di Python:
+```bash
+# Creare un nuovo progetto Flask con uv
+uv init  flask-tutorial --python 3.12
+
+# Questo crea:
+# - la cartella flask-tutorial
+# - utilizza la versione 3.12 di Python
+# - pyproject.toml (configurazione del progetto)
+# - .python-version (versione di Python)
+# - hello.py (file di esempio, che possiamo rinominare/sostituire)
+```
 ---
 
 ## Installazione di Flask
 
-Con l'ambiente virtuale attivo, installiamo Flask usando pip:
+Con uv, aggiungiamo Flask come dipendenza del progetto:
 
 ```bash
-pip install -r requirements.txt
+uv add flask
 ```
 
-Per verificare l'installazione:
+Questo comando:
+- Installa Flask e le sue dipendenze
+- Crea/aggiorna automaticamente l'ambiente virtuale `.venv`
+- Aggiorna il file `pyproject.toml` con la dipendenza
+- Crea il file `uv.lock` per garantire build riproducibili
+
+Per verificare le dipendenze installate:
 ```bash
-pip list
+uv tree
 ```
-
-Dovresti vedere Flask e le sue dipendenze nella lista.
 
 ---
 
@@ -78,11 +122,33 @@ if __name__ == '__main__':
 
 ### Eseguire l'applicazione
 
+Con uv, esegui l'applicazione direttamente:
+
 ```bash
-cd tappa1
-python app.py
+uv run app.py
 ```
+
+**Nota:** `uv run` esegue automaticamente il codice nell'ambiente virtuale gestito da uv, senza bisogno di attivarlo manualmente.
 
 Apri il browser e vai su: `http://127.0.0.1:5000/`
 
 ---
+
+## Comandi utili di uv
+
+```bash
+# Aggiungere una dipendenza
+uv add <package-name>
+
+# Rimuovere una dipendenza
+uv remove <package-name>
+
+# Visualizzare l'albero delle dipendenze
+uv tree
+
+# Sincronizzare l'ambiente con pyproject.toml
+uv sync
+
+# Eseguire un comando nell'ambiente virtuale
+uv run <comando>
+```

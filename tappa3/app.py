@@ -7,10 +7,15 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
+@app.route("/studenti")
+def studenti():
+    lista_studenti= ['Studente 1', 'Studente2', "Studente3", "fulvio Frapolli"]
+    return render_template("studenti.html", studenti=lista_studenti)
+
 
 @app.route("/about")
 def about():
-    mess = "Contenuto del mio messaggio "
+    mess = "Contenuto del mio messaggio üüüüüüü "
     return render_template("index.html", messaggio=mess)
 
 

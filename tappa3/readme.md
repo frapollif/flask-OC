@@ -123,34 +123,61 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
-**File: `templates/index.html`**
+**File: `templates/base.html`** (Template Base)
 ```html
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial Flask</title>
+    <title>{% block title %}Tutorial Flask{% endblock %}</title>
 </head>
 <body>
-    <h1>TITOLO DELLA PAGINA</h1>
-    <p>Contenuto della pagina</p>
+    <header>
+        <nav>
+            <a href="/">Home</a> | 
+            <a href="/about">About</a> | 
+            <a href="/studenti">Studenti</a>
+        </nav>
+    </header>
     
-    <!-- Visualizzare una variabile passata da Python -->
-    <p>{{ messaggio }}</p>
+    <main>
+        {% block content %}
+        <!-- Il contenuto delle pagine figlie sarà inserito qui -->
+        {% endblock %}
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Tutorial Flask</p>
+    </footer>
 </body>
 </html>
 ```
 
-**File: `templates/studenti.html`**
+**File: `templates/index.html`** (Eredita da base.html)
 ```html
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista Studenti</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Home - Tutorial Flask{% endblock %}
+
+{% block content %}
+    <h1>TITOLO DELLA PAGINA</h1>
+    <p>Contenuto della pagina</p>
+    
+    <!-- Visualizzare una variabile passata da Python -->
+    {% if messaggio %}
+        <p><strong>Messaggio:</strong> {{ messaggio }}</p>
+    {% endif %}
+{% endblock %}
+```
+
+**File: `templates/studenti.html`** (Eredita da base.html)
+```html
+{% extends "base.html" %}
+
+{% block title %}Lista Studenti - Tutorial Flask{% endblock %}
+
+{% block content %}
     <h1>Lista degli Studenti</h1>
     <ul>
     {% for studente in studenti %}
@@ -158,9 +185,8 @@ if __name__ == "__main__":
     {% endfor %}
     </ul>
     
-    <p>Totale studenti: {{ studenti | length }}</p>
-</body>
-</html>
+    <p><strong>Totale studenti:</strong> {{ studenti | length }}</p>
+{% endblock %}
 ```
 
 ### Struttura delle Cartelle
@@ -170,6 +196,7 @@ progetto/
 │
 ├── app.py
 └── templates/
+    ├── base.html
     ├── index.html
     └── studenti.html
 ```

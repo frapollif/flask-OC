@@ -14,6 +14,10 @@ studenti_db=[
 def home():
     return render_template("index.html")
 
+@app.route("/jsdemo")
+def js_demo():
+    return render_template("jsdemo.html")
+
 
 
 

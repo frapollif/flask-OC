@@ -1,3 +1,16 @@
 nav {
     background-color: blueviolet;
+    color: white;
+    padding: 10px;
+
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+nav a:hover {
+    font-weight: bold;
 }
